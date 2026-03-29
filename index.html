@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MeshChat — Dual-mode messaging that works offline via Bluetooth mesh network.">
+<meta property="og:title" content="Install MeshChat">
+<meta property="og:description" content="Messages that travel via Bluetooth when there's no internet.">
+<meta property="og:image" content="https://yourhost.com/og-image.png">
+<title>MeshChat — Install</title>
+
+<!-- ═══════ EDIT THESE TWO LINES WHEN YOUR BUILDS ARE READY ════════ -->
+<script>
+  const IOS_URL      = "YOUR_TESTFLIGHT_OR_IPA_URL";   // e.g. https://testflight.apple.com/join/XXXXXXXX
+  const ANDROID_URL  = "YOUR_APK_DOWNLOAD_URL";         // e.g. https://expo.dev/artifacts/.../app.apk
+  const IOS_READY    = false;   // flip to true once your iOS build is live
+  const ANDROID_READY = false;  // flip to true once your Android build is live
+</script>
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --forest:   #1B6B45;
+    --forest-l: #2D8A5E;
+    --forest-d: #0D3D26;
+    --forest-p: #D8F3DC;
+    --mint:     #52B788;
+    --amber:    #F4A261;
+    --slate:    #0F0F0F;
+    --muted:    #6B7280;
+    --border:   rgba(255,255,255,0.08);
+    --card-bg:  rgba(255,255,255,0.04);
+    --r:        16px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #080f0b;
+    color: #e8f5e9;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background mesh pattern ─────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 10%, rgba(27,107,69,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 85% 80%, rgba(82,183,136,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 60% 40%, rgba(13,61,38,0.30) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Dot grid overlay */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: radial-gradient(rgba(82,183,136,0.12) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Nav ─────────────────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,15,11,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+  nav .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 18px; color: #fff; text-decoration: none;
+  }
+  .logo-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--forest), var(--mint));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    font-family: 'Syne', sans-serif;
+  }
+  .nav-pill {
+    background: rgba(82,183,136,0.12);
+    border: 1px solid rgba(82,183,136,0.25);
+    color: var(--mint); font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 20px;
+  }
+
+  /* ── Hero ────────────────────────────────────────────── */
+  .hero {
+    padding: 96px 0 64px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(27,107,69,0.18);
+    border: 1px solid rgba(82,183,136,0.28);
+    color: var(--mint); font-size: 12px; font-weight: 500;
+    padding: 5px 14px; border-radius: 20px;
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+    animation: fadeDown 0.6s ease both;
+  }
+  .pulse-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--mint);
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 8vw, 86px);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -2px;
+    color: #fff;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+  h1 span {
+    background: linear-gradient(135deg, var(--mint), #a8edca);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: rgba(232,245,233,0.65);
+    max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.6;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  /* ── Install buttons ─────────────────────────────────── */
+  .install-row {
+    display: flex; gap: 14px; justify-content: center;
+    flex-wrap: wrap; margin-top: 44px;
+    animation: fadeDown 0.6s 0.3s ease both;
+  }
+
+  .install-btn {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 28px; border-radius: 14px;
+    text-decoration: none; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s ease; cursor: pointer;
+    border: none; min-width: 220px;
+    position: relative; overflow: hidden;
+  }
+  .install-btn::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .install-btn.ios {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+  }
+  .install-btn.android {
+    background: linear-gradient(135deg, var(--forest-d), var(--forest));
+    border: 1px solid rgba(82,183,136,0.3);
+    color: #fff;
+  }
+  .install-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .install-btn.disabled {
+    opacity: 0.45; cursor: not-allowed; pointer-events: none;
+  }
+  .btn-icon { font-size: 26px; line-height: 1; flex-shrink: 0; }
+  .btn-text-wrap { text-align: left; }
+  .btn-label { font-size: 11px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.8px; }
+  .btn-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: #fff; margin-top: 1px; }
+  .btn-coming { font-size: 10px; color: var(--amber); font-weight: 500; margin-top: 2px; }
+
+  /* ── QR section ──────────────────────────────────────── */
+  .qr-row {
+    display: flex; gap: 24px; justify-content: center;
+    flex-wrap: wrap; margin-top: 36px;
+    animation: fadeDown 0.6s 0.4s ease both;
+  }
+  .qr-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    min-width: 160px;
+  }
+  .qr-box {
+    width: 110px; height: 110px;
+    background: #fff; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .qr-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .qr-placeholder svg { width: 80px; height: 80px; }
+  .qr-label { font-size: 11px; color: rgba(232,245,233,0.5); font-weight: 500; letter-spacing: 0.3px; }
+  .qr-sublabel { font-size: 10px; color: rgba(232,245,233,0.3); }
+
+  /* ── Stats strip ─────────────────────────────────────── */
+  .stats {
+    display: flex; justify-content: center; gap: 48px;
+    padding: 40px 0; flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: 64px;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800;
+    color: #fff; line-height: 1;
+  }
+  .stat-num span { color: var(--mint); }
+  .stat-label { font-size: 12px; color: rgba(232,245,233,0.45); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.6px; }
+
+  /* ── Features ────────────────────────────────────────── */
+  .features { padding: 80px 0 40px; }
+  .section-tag {
+    font-size: 11px; font-weight: 600; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--mint);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800; color: #fff; line-height: 1.15;
+    letter-spacing: -0.5px; margin-bottom: 48px;
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 24px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .feature-card:hover {
+    border-color: rgba(82,183,136,0.25);
+    background: rgba(82,183,136,0.04);
+  }
+  .feat-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 14px;
+  }
+  .feat-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: #fff; margin-bottom: 6px; }
+  .feat-desc { font-size: 13.5px; color: rgba(232,245,233,0.5); line-height: 1.6; }
+
+  /* ── How to install ──────────────────────────────────── */
+  .how { padding: 40px 0 80px; }
+  .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  @media (max-width: 640px) { .how-grid { grid-template-columns: 1fr; } }
+  .platform-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+  .platform-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; color: #fff;
+  }
+  .platform-steps { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+  .how-step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: rgba(82,183,136,0.15);
+    border: 1px solid rgba(82,183,136,0.3);
+    color: var(--mint); font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 13.5px; color: rgba(232,245,233,0.65); line-height: 1.55; }
+  .step-text strong { color: #fff; }
+
+  /* ── Tech stack ──────────────────────────────────────── */
+  .tech-row {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 48px; justify-content: center;
+    padding-bottom: 64px;
+  }
+  .tech-pill {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 7px 16px;
+    font-size: 12px; font-weight: 500;
+    color: rgba(232,245,233,0.6);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tech-pill:hover { color: var(--mint); border-color: rgba(82,183,136,0.3); }
+
+  /* ── Footer ──────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    text-align: center;
+    font-size: 12px; color: rgba(232,245,233,0.3);
+  }
+  footer a { color: var(--mint); text-decoration: none; }
+
+  /* ── Animations ──────────────────────────────────────── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 540px) {
+    .install-btn { min-width: 100%; }
+    .stats { gap: 28px; }
+    .qr-row { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap">
+    <a class="nav-logo" href="#">
+      <div class="logo-icon">MC</div>
+      MeshChat
+    </a>
+    <div class="nav-pill">v1.0.0</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      Peer-to-peer · No servers needed offline
+    </div>
+
+    <h1>Messages that<br><span>travel further</span></h1>
+
+    <p class="hero-sub">
+      MeshChat sends over the internet when you have it.
+      Falls back to Bluetooth mesh when you don't.
+      No configuration. No data loss.
+    </p>
+
+    <!-- INSTALL BUTTONS -->
+    <div class="install-row" id="installRow"></div>
+
+    <!-- QR CODES -->
+    <div class="qr-row" id="qrRow"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section>
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">7<span>×</span></div>
+        <div class="stat-label">Max mesh hops</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span>~</span>500ms</div>
+        <div class="stat-label">Mode switch time</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">iOS<span>+</span>Android</div>
+        <div class="stat-label">Both platforms</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">E2E<span>*</span></div>
+        <div class="stat-label">Encryption ready</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="wrap">
+    <div class="section-tag">What makes it different</div>
+    <div class="section-title">Built for the real world,<br>not just the connected one.</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(27,107,69,0.2)">📡</div>
+        <div class="feat-title">Dual-mode transport</div>
+        <div class="feat-desc">Prefers Firebase over internet. Drops to Bluetooth LE + Wi-Fi Direct when offline. Switches automatically in under 500ms.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(82,183,136,0.15)">🔗</div>
+        <div class="feat-title">Store-and-forward mesh</div>
+        <div class="feat-desc">Messages hop up to 7 devices to reach the recipient. Each device relays for others — no central tower needed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(244,162,97,0.15)">💾</div>
+        <div class="feat-title">Local-first SQLite</div>
+        <div class="feat-desc">Every message is persisted locally before any network attempt. The app works fully offline — sync happens when you reconnect.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(21,101,192,0.2)">🔁</div>
+        <div class="feat-title">Reconnect sync</div>
+        <div class="feat-desc">Coming back online? MeshChat uploads your queued messages and downloads anything you missed in the right order.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(106,27,154,0.2)">🛡️</div>
+        <div class="feat-title">Deduplication</div>
+        <div class="feat-desc">A message arriving via both mesh relay and internet sync at the same time appears exactly once. Rolling 60s dedup cache.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon" style="background:rgba(198,40,40,0.15)">📶</div>
+        <div class="feat-title">Live mode indicator</div>
+        <div class="feat-desc">Always-visible banner shows current mode, peer count, and relay path ("Relayed via 2 devices · 180ms").</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO INSTALL -->
+<section class="how">
+  <div class="wrap">
+    <div class="section-tag">Installation</div>
+    <div class="section-title">Get it on your device</div>
+    <div class="how-grid">
+
+      <!-- iOS -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <span style="font-size:22px">🍎</span> iOS — TestFlight
+        </div>
+        <div class="platform-steps">
+          <div class="how-step">
+            <div class="step-num">1</div>
+            <div class="step-text">Install <strong>TestFlight</strong> from the App Store on your iPhone or iPad.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">2</div>
+            <div class="step-text">Tap the <strong>iOS button above</strong> (or scan the QR code) to open the TestFlight invite link.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">3</div>
+            <div class="step-text">Tap <strong>Accept</strong> in TestFlight, then <strong>Install</strong>. The app installs in seconds.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Allow Bluetooth</strong> when prompted — required for mesh mode to work.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Android -->
+      <div class="platform-card">
+        <div class="platform-header">
+          <span style="font-size:22px">🤖</span> Android — APK
+        </div>
+        <div class="platform-steps">
+          <div class="how-step">
+            <div class="step-num">1</div>
+            <div class="step-text">Tap the <strong>Android button above</strong> (or scan the QR code) to download the APK.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">2</div>
+            <div class="step-text">If prompted, go to <strong>Settings → Install unknown apps</strong> and allow your browser.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">3</div>
+            <div class="step-text">Open the downloaded APK file and tap <strong>Install</strong>.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">4</div>
+            <div class="step-text">Allow <strong>Bluetooth and Nearby devices</strong> permissions when the app opens.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tech stack pills -->
+    <div class="tech-row">
+      <div class="tech-pill">React Native</div>
+      <div class="tech-pill">Expo + EAS Build</div>
+      <div class="tech-pill">Firebase RTDB</div>
+      <div class="tech-pill">CoreBluetooth</div>
+      <div class="tech-pill">MultipeerConnectivity</div>
+      <div class="tech-pill">Bluetooth LE GATT</div>
+      <div class="tech-pill">Wi-Fi Direct</div>
+      <div class="tech-pill">SQLite</div>
+      <div class="tech-pill">TypeScript</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    MeshChat · MIT License ·
+    <a href="https://github.com/yourname/meshchat" target="_blank">GitHub</a> ·
+    Built with Expo + EAS ·
+    <span style="color:rgba(232,245,233,0.2)">* E2E encryption hook ready, protocol integration pending</span>
+  </div>
+</footer>
+
+<!-- ── Dynamic button + QR rendering ────────────────────────── -->
+<script>
+// Minimal QR code SVG generator (pure JS, no library)
+function qrPlaceholder(label) {
+  // Visual placeholder — swap with real QR lib (qrcode.js) once you have real URLs
+  return `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="2" width="22" height="22" rx="3" fill="none" stroke="#111" stroke-width="3"/>
+    <rect x="8" y="8" width="10" height="10" rx="1" fill="#111"/>
+    <rect x="56" y="2" width="22" height="22" rx="3" fill="none" stroke="#111" stroke-width="3"/>
+    <rect x="62" y="8" width="10" height="10" rx="1" fill="#111"/>
+    <rect x="2" y="56" width="22" height="22" rx="3" fill="none" stroke="#111" stroke-width="3"/>
+    <rect x="8" y="62" width="10" height="10" rx="1" fill="#111"/>
+    <rect x="28" y="2" width="4" height="4" fill="#111"/><rect x="34" y="2" width="4" height="4" fill="#111"/>
+    <rect x="40" y="2" width="4" height="4" fill="#111"/><rect x="28" y="8" width="4" height="4" fill="#111"/>
+    <rect x="40" y="8" width="4" height="4" fill="#111"/><rect x="28" y="14" width="4" height="4" fill="#111"/>
+    <rect x="34" y="14" width="4" height="4" fill="#111"/><rect x="2" y="28" width="4" height="4" fill="#111"/>
+    <rect x="8" y="28" width="4" height="4" fill="#111"/><rect x="14" y="34" width="4" height="4" fill="#111"/>
+    <rect x="2" y="40" width="4" height="4" fill="#111"/><rect x="14" y="40" width="4" height="4" fill="#111"/>
+    <rect x="2" y="46" width="4" height="4" fill="#111"/><rect x="8" y="46" width="4" height="4" fill="#111"/>
+    <rect x="28" y="28" width="24" height="24" rx="2" fill="#111" opacity="0.08"/>
+    <rect x="32" y="32" width="16" height="16" rx="1" fill="#111" opacity="0.15"/>
+    <rect x="56" y="28" width="4" height="4" fill="#111"/><rect x="62" y="28" width="4" height="4" fill="#111"/>
+    <rect x="74" y="28" width="4" height="4" fill="#111"/><rect x="56" y="34" width="4" height="4" fill="#111"/>
+    <rect x="68" y="34" width="4" height="4" fill="#111"/><rect x="74" y="34" width="4" height="4" fill="#111"/>
+    <rect x="56" y="40" width="4" height="4" fill="#111"/><rect x="62" y="40" width="4" height="4" fill="#111"/>
+    <rect x="28" y="56" width="4" height="4" fill="#111"/><rect x="34" y="62" width="4" height="4" fill="#111"/>
+    <rect x="28" y="68" width="4" height="4" fill="#111"/><rect x="40" y="68" width="4" height="4" fill="#111"/>
+    <rect x="46" y="56" width="4" height="4" fill="#111"/><rect x="52" y="62" width="4" height="4" fill="#111"/>
+    <rect x="58" y="56" width="4" height="4" fill="#111"/><rect x="64" y="62" width="4" height="4" fill="#111"/>
+    <rect x="70" y="56" width="4" height="4" fill="#111"/><rect x="64" y="68" width="4" height="4" fill="#111"/>
+    <rect x="70" y="68" width="4" height="4" fill="#111"/><rect x="76" y="74" width="4" height="4" fill="#111"/>
+  </svg>`;
+}
+
+function renderInstallUI() {
+  const row = document.getElementById('installRow');
+  const qrRow = document.getElementById('qrRow');
+
+  // iOS button
+  const iosBtn = document.createElement('a');
+  iosBtn.className = 'install-btn ios' + (IOS_READY ? '' : ' disabled');
+  iosBtn.href = IOS_READY ? IOS_URL : '#';
+  iosBtn.target = '_blank';
+  iosBtn.rel = 'noopener noreferrer';
+  iosBtn.innerHTML = `
+    <div class="btn-icon">🍎</div>
+    <div class="btn-text-wrap">
+      <div class="btn-label">Download on</div>
+      <div class="btn-title">TestFlight (iOS)</div>
+      ${!IOS_READY ? '<div class="btn-coming">Build in progress…</div>' : ''}
+    </div>`;
+  row.appendChild(iosBtn);
+
+  // Android button
+  const aBtn = document.createElement('a');
+  aBtn.className = 'install-btn android' + (ANDROID_READY ? '' : ' disabled');
+  aBtn.href = ANDROID_READY ? ANDROID_URL : '#';
+  aBtn.target = '_blank';
+  aBtn.rel = 'noopener noreferrer';
+  aBtn.download = ANDROID_READY ? 'meshchat.apk' : undefined;
+  aBtn.innerHTML = `
+    <div class="btn-icon">🤖</div>
+    <div class="btn-text-wrap">
+      <div class="btn-label">Get the APK</div>
+      <div class="btn-title">Android</div>
+      ${!ANDROID_READY ? '<div class="btn-coming">Build in progress…</div>' : ''}
+    </div>`;
+  row.appendChild(aBtn);
+
+  // QR codes (shown when ready; placeholders otherwise)
+  ['iOS', 'Android'].forEach((platform, i) => {
+    const card = document.createElement('div');
+    card.className = 'qr-card';
+    const isReady = i === 0 ? IOS_READY : ANDROID_READY;
+    card.innerHTML = `
+      <div class="qr-box">
+        ${isReady
+          ? `<img src="${i === 0 ? IOS_URL : ANDROID_URL}" style="width:90px;height:90px;object-fit:contain" alt="${platform} QR">`
+          : `<div class="qr-placeholder">${qrPlaceholder(platform)}</div>`}
+      </div>
+      <div class="qr-label">${platform}</div>
+      <div class="qr-sublabel">${isReady ? 'Scan to install' : 'Coming soon'}</div>`;
+    qrRow.appendChild(card);
+  });
+}
+
+renderInstallUI();
+
+// Auto-detect device and scroll install button into view
+const ua = navigator.userAgent;
+const isIOS = /iPhone|iPad|iPod/i.test(ua);
+const isAndroid = /Android/i.test(ua);
+if (isIOS || isAndroid) {
+  document.querySelectorAll('.install-btn').forEach((btn, i) => {
+    const isForMe = (isIOS && i === 0) || (isAndroid && i === 1);
+    if (isForMe) {
+      btn.style.animation = 'pulse 1.5s 1s ease 3';
+    }
+  });
+}
+</script>
+
+</body>
+</html>
